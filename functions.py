@@ -1,4 +1,5 @@
 from typing import Any
+import time
 
 from web3 import Web3
 
@@ -83,3 +84,47 @@ def make_transaction_send_all_main_token(web3: Web3, from_address: str, private_
     txn_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
     
     return txn_hash
+
+
+def make_transaction_multiple_send_main_token(web3: Web3, from_address: str, private_key: str, to_addresses: list, amount: float) -> Any:
+    '''
+    Функция для отправки фиксированного количества монет сети на различные кошельки
+    
+    :param web3: Объект web3
+    :param from_address: С какого адреса произвести отправку
+    :param private_key: Приватный ключ для адреса с которого будет производиться отправка
+    :param to_addresses: На какие адреса будут отправлены монеты
+    :param amount: Количество монет для отправки
+    '''
+
+    txn_hashs = []
+
+    for address in to_addresses:
+        # цена газа
+        gas_price = web3.eth.gas_price
+        
+        # # количество газа
+        # gas = 21000
+        
+        # число подтвержденных транзакций отправителя
+        nonce = web3.eth.get_transaction_count(from_address)
+
+        txn = {
+            'chainId': web3.eth.chain_id,
+            'from': from_address,
+            'to': address,
+            'value': int(Web3.to_wei(amount, 'ether')),
+            'nonce': nonce, 
+            'gasPrice': gas_price,
+            'gas': 0,
+        }
+
+        gas_tmp = web3.eth.estimate_gas(txn)
+        txn.update({'gas': gas_tmp})
+        signed_txn = web3.eth.account.sign_transaction(txn, private_key)    
+        txn_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
+        txn_hashs.append(txn_hash)
+        print('Send from', from_address, 'to address', address, amount, 'BNB')
+        time.sleep(15)
+        
+    return txn_hashs

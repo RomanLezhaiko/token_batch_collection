@@ -3,7 +3,7 @@ import time
 
 from web3 import Web3
 
-from functions import get_balance, make_transaction_main_token, make_transaction_send_all_main_token
+from functions import *
 
 
 rpc_url = "https://data-seed-prebsc-1-s1.binance.org:8545"
@@ -26,7 +26,16 @@ for wallet in wallets:
 # txn_receipt = web3.eth.get_transaction_receipt(txn_hash)
 # print(txn_receipt)
 
-txn_hash = make_transaction_send_all_main_token(web3, wallets[1]['public_key'], wallets[1]['private_key'], wallets[0]['public_key'])
+# It's work
+txn_hash = make_transaction_send_all_main_token(web3, wallets[4]['public_key'], wallets[4]['private_key'], wallets[0]['public_key'])
 time.sleep(10)
 txn_receipt = web3.eth.get_transaction_receipt(txn_hash)
-print(txn_receipt)
+print(txn_receipt['status'])
+
+# It's work
+# wallets_list = [wallets[1]['public_key'], wallets[2]['public_key'], wallets[3]['public_key'], wallets[4]['public_key']]
+# txn_hashs = make_transaction_multiple_send_main_token(web3, wallets[0]['public_key'], wallets[0]['private_key'], wallets_list, 0.01)
+
+# for txn_hash in txn_hashs:
+#     txn_receipt = web3.eth.get_transaction_receipt(txn_hash)
+#     print(txn_receipt['from'], txn_receipt['to'], txn_receipt['status'], sep='   ')
