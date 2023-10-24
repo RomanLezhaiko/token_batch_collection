@@ -38,9 +38,11 @@ def make_transaction_main_token(web3: Web3, from_address: str, private_key: str,
         'value': int(Web3.to_wei(amount, 'ether')),
         'nonce': nonce, 
         'gasPrice': gas_price,
-        'gas': gas,
+        'gas': 0,
     }
 
+    gas_tmp = web3.eth.estimate_gas(txn)
+    txn.update({'gas': gas_tmp})
     signed_txn = web3.eth.account.sign_transaction(txn, private_key)
     txn_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
     
@@ -121,6 +123,7 @@ def make_transaction_multiple_send_main_token(web3: Web3, from_address: str, pri
 
         gas_tmp = web3.eth.estimate_gas(txn)
         txn.update({'gas': gas_tmp})
+        txn.update({'value': int(Web3.to_wei(amount, 'ether')) - gas_tmp * gas_price})
         signed_txn = web3.eth.account.sign_transaction(txn, private_key)    
         txn_hash = web3.eth.send_raw_transaction(signed_txn.rawTransaction)
         txn_hashs.append(txn_hash)

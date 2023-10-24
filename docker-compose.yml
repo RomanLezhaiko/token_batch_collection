@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  roman_wallets:
+    build: .
+    container_name: roman_wallets
+    command: bash -c "cd app/ && python3 main.py"
+    restart: always
+    environment:
+      - DEBUG=1
+      - WALLETS_FILE_PATH=wallets/roma/
+      - MAIN_WALLET=0xFeF06Ba5F81D56f0630611e483CC40834C52F7FC
+      - NODERPC=https://data-seed-prebsc-1-s1.binance.org:8545   # RPC URL для сети, найти можно на https://chainlist.org/
+    volumes:
+      - ./:/app
+    networks:
+      - main_network
+
+
+networks:
+  main_network:
