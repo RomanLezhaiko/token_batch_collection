@@ -35,8 +35,11 @@ for wallet in wallets:
 wallets_list = [wallets[1]['public_key'], wallets[2]['public_key'], 
                 wallets[3]['public_key'], wallets[4]['public_key'],
                 wallets[5]['public_key'], wallets[6]['public_key'], 
-                wallets[7]['public_key'], wallets[8]['public_key']]
-txn_hashs = make_transaction_multiple_send_main_token(web3, wallets[0]['public_key'], wallets[0]['private_key'], wallets_list, 0.01)
+                wallets[7]['public_key'], wallets[8]['public_key'],
+                wallets[9]['public_key'], wallets[10]['public_key']]
+
+txn_hashs = make_transaction_multiple_send_main_token(web3, wallets[0]['public_key'], wallets[0]['private_key'], 
+                                                      wallets_list, 0.01)
 
 for txn_hash in txn_hashs:
     txn_receipt = web3.eth.get_transaction_receipt(txn_hash)

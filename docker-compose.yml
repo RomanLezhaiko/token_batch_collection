@@ -11,11 +11,15 @@ services:
       - WALLETS_FILE_PATH=wallets/roma/
       - MAIN_WALLET=0xFeF06Ba5F81D56f0630611e483CC40834C52F7FC
       - NODERPC=https://data-seed-prebsc-1-s1.binance.org:8545   # RPC URL для сети, найти можно на https://chainlist.org/
+      - NATIVE_TOKEN=BNB
     volumes:
       - ./:/app
     networks:
       - main_network
 
+
+volumes:
+  wallets:
 
 networks:
   main_network:
